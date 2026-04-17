@@ -18,6 +18,9 @@ import {
   fetchOrganizations,
   fetchPriceTypes,
 } from "@/src/services/api";
+import { ClientSearch } from "./ClientSearch";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 interface OrderFormProps {
   token: string;
@@ -122,11 +125,21 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
         </div>
       </header>
 
-      {/* Form body — sections will be added in upcoming steps */}
+      {/* Form body */}
       <main className="max-w-lg mx-auto px-4 py-6 space-y-4">
-        <p className="text-slate-500 text-xs text-center">
-          Form sections loading...
-        </p>
+        {/* Client search */}
+        <Card className="bg-slate-900/60 border-slate-700/50">
+          <CardContent className="p-4 space-y-2">
+            <Label className="text-slate-400 text-xs uppercase tracking-wider">
+              Counterparty
+            </Label>
+            <ClientSearch
+              token={token}
+              value={contragent}
+              onChange={setContragent}
+            />
+          </CardContent>
+        </Card>
       </main>
     </div>
   );

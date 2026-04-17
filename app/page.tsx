@@ -2,9 +2,10 @@
 
 import { useToken } from "@/src/hooks/useToken";
 import { TokenForm } from "@/src/components/order/TokenForm";
+import { OrderForm } from "@/src/components/order/OrderForm";
 
 export default function Page() {
-  const { token, setToken, isLoaded } = useToken();
+  const { token, setToken, clearToken, isLoaded } = useToken();
 
   if (!isLoaded) {
     return (
@@ -18,10 +19,5 @@ export default function Page() {
     return <TokenForm onSuccess={setToken} />;
   }
 
-  // Order form will be rendered here in the next steps
-  return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-      <p className="text-slate-400 text-sm">Loading order form...</p>
-    </div>
-  );
+  return <OrderForm token={token} onLogout={clearToken} />;
 }

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type {
   Contragent,
+  Nomenclature,
   Warehouse,
   Paybox,
   Organization,
@@ -20,9 +21,10 @@ import {
 } from "@/src/services/api";
 import { ClientSearch } from "./ClientSearch";
 import { SelectField } from "./SelectField";
+import { ProductSearch } from "./ProductSearch";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Building2, Warehouse as WarehouseIcon, CreditCard, Tag } from "lucide-react";
+import { Building2, Warehouse as WarehouseIcon, CreditCard, Tag, Package } from "lucide-react";
 
 interface OrderFormProps {
   token: string;
@@ -82,6 +84,20 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
     0
   );
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const addToCart = (item: Nomenclature) => {
+    setCart((prev) => {
+      const existing = prev.find((c) => c.nomenclature.id === item.id);
+      if (existing) {
+        return prev.map((c) =>
+          c.nomenclature.id === item.id
+            ? { ...c, quantity: c.quantity + 1 }
+            : c
+        );
+      }
+      return [...prev, { nomenclature: item, quantity: 1, price: item.price, discount: 0 }];
+    });
+  };
 
   if (loadingMeta) {
     return (
@@ -196,6 +212,21 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
               value={priceTypeId}
               onChange={setPriceTypeId}
               icon={<Tag className="w-3 h-3" />}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Product search */}
+        <Card className="bg-slate-900/60 border-slate-700/50">
+          <CardContent className="p-4 space-y-2">
+            <Label className="text-slate-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <Package className="w-3 h-3" />
+              Products
+            </Label>
+            <ProductSearch
+              token={token}
+              cart={cart}
+              onAdd={addToCart}
             />
           </CardContent>
         </Card>

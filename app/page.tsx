@@ -1,19 +1,27 @@
-import { Button } from "@/components/ui/button"
+"use client";
+
+import { useToken } from "@/src/hooks/useToken";
+import { TokenForm } from "@/src/components/order/TokenForm";
 
 export default function Page() {
-  return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+  const { token, setToken, isLoaded } = useToken();
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full border-2 border-violet-500 border-t-transparent animate-spin" />
       </div>
+    );
+  }
+
+  if (!token) {
+    return <TokenForm onSuccess={setToken} />;
+  }
+
+  // Order form will be rendered here in the next steps
+  return (
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+      <p className="text-slate-400 text-sm">Loading order form...</p>
     </div>
-  )
+  );
 }

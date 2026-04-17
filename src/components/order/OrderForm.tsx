@@ -19,8 +19,10 @@ import {
   fetchPriceTypes,
 } from "@/src/services/api";
 import { ClientSearch } from "./ClientSearch";
+import { SelectField } from "./SelectField";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Building2, Warehouse as WarehouseIcon, CreditCard, Tag } from "lucide-react";
 
 interface OrderFormProps {
   token: string;
@@ -137,6 +139,63 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
               token={token}
               value={contragent}
               onChange={setContragent}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Payment accounts */}
+        <Card className="bg-slate-900/60 border-slate-700/50">
+          <CardContent className="p-4">
+            <SelectField
+              label="Payment Account"
+              placeholder="Select account..."
+              options={payboxes}
+              value={payboxId}
+              onChange={setPayboxId}
+              icon={<CreditCard className="w-3 h-3" />}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Organizations + Warehouses side by side */}
+        <div className="grid grid-cols-2 gap-3">
+          <Card className="bg-slate-900/60 border-slate-700/50">
+            <CardContent className="p-4">
+              <SelectField
+                label="Organization"
+                placeholder="Select org..."
+                options={organizations}
+                value={organizationId}
+                onChange={setOrganizationId}
+                icon={<Building2 className="w-3 h-3" />}
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="bg-slate-900/60 border-slate-700/50">
+            <CardContent className="p-4">
+              <SelectField
+                label="Warehouse"
+                placeholder="Select warehouse..."
+                options={warehouses}
+                value={warehouseId}
+                onChange={setWarehouseId}
+                icon={<WarehouseIcon className="w-3 h-3" />}
+              />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Price type */}
+        <Card className="bg-slate-900/60 border-slate-700/50">
+          <CardContent className="p-4">
+            <SelectField
+              label="Price Type"
+              placeholder="Select price type..."
+              options={priceTypes}
+              value={priceTypeId}
+              onChange={setPriceTypeId}
+              icon={<Tag className="w-3 h-3" />}
             />
           </CardContent>
         </Card>

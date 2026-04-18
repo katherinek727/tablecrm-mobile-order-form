@@ -26,7 +26,8 @@ import { CartTable } from "./CartTable";
 import { OrderSummary } from "./OrderSummary";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Building2, Warehouse as WarehouseIcon, CreditCard, Tag, Package } from "lucide-react";
+import { Building2, Warehouse as WarehouseIcon, CreditCard, Tag, Package, ArrowUpDown } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface OrderFormProps {
   token: string;
@@ -262,6 +263,23 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
               value={priceTypeId}
               onChange={setPriceTypeId}
               icon={<Tag className="w-3 h-3" />}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Priority */}
+        <Card className="bg-slate-900/60 border-slate-700/50">
+          <CardContent className="p-4 space-y-2">
+            <Label className="text-slate-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <ArrowUpDown className="w-3 h-3" />
+              Priority
+            </Label>
+            <Input
+              type="number"
+              min={0}
+              value={priority}
+              onChange={(e) => setPriority(Math.max(0, Number(e.target.value)))}
+              className="bg-slate-800/60 border-slate-600/50 text-white h-11 rounded-xl focus:border-violet-500 focus:ring-violet-500/20"
             />
           </CardContent>
         </Card>

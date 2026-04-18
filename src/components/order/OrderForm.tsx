@@ -22,6 +22,7 @@ import {
 import { ClientSearch } from "./ClientSearch";
 import { SelectField } from "./SelectField";
 import { ProductSearch } from "./ProductSearch";
+import { CartTable } from "./CartTable";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Building2, Warehouse as WarehouseIcon, CreditCard, Tag, Package } from "lucide-react";
@@ -98,6 +99,19 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
       return [...prev, { nomenclature: item, quantity: 1, price: item.price, discount: 0 }];
     });
   };
+
+  const updateQuantity = (id: number, quantity: number) =>
+    setCart((prev) =>
+      prev.map((c) => (c.nomenclature.id === id ? { ...c, quantity } : c))
+    );
+
+  const updateDiscount = (id: number, discount: number) =>
+    setCart((prev) =>
+      prev.map((c) => (c.nomenclature.id === id ? { ...c, discount } : c))
+    );
+
+  const removeFromCart = (id: number) =>
+    setCart((prev) => prev.filter((c) => c.nomenclature.id !== id));
 
   if (loadingMeta) {
     return (
@@ -218,7 +232,7 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
 
         {/* Product search */}
         <Card className="bg-slate-900/60 border-slate-700/50">
-          <CardContent className="p-4 space-y-2">
+          <CardContent className="p-4 space-y-3">
             <Label className="text-slate-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
               <Package className="w-3 h-3" />
               Products
@@ -227,6 +241,12 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
               token={token}
               cart={cart}
               onAdd={addToCart}
+            />
+            <CartTable
+              items={cart}
+              onQuantityChange={updateQuantity}
+              onDiscountChange={updateDiscount}
+              onRemove={removeFromCart}
             />
           </CardContent>
         </Card>

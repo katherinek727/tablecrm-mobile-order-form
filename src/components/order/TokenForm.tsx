@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { KeyRound, ArrowRight, Loader2 } from "lucide-react";
-import { fetchWarehouses } from "@/services/api";
-import { ApiError } from "@/lib/api-client";
+import { fetchWarehouses } from "@/src/services/api";
+import { ApiError } from "@/src/lib/api-client";
 
 interface TokenFormProps {
   onSuccess: (token: string) => void;

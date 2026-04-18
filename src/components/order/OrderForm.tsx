@@ -23,6 +23,7 @@ import { ClientSearch } from "./ClientSearch";
 import { SelectField } from "./SelectField";
 import { ProductSearch } from "./ProductSearch";
 import { CartTable } from "./CartTable";
+import { OrderSummary } from "./OrderSummary";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Building2, Warehouse as WarehouseIcon, CreditCard, Tag, Package } from "lucide-react";
@@ -112,6 +113,41 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
 
   const removeFromCart = (id: number) =>
     setCart((prev) => prev.filter((c) => c.nomenclature.id !== id));
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (isPosted: boolean) => {
+    if (cart.length === 0) return;
+    setSubmitting(true);
+    try {
+      const { createSale } = await import("@/src/services/api");
+      const payload = {
+        contragent_id: contragent?.id ?? null,
+        warehouse_id: warehouseId,
+        organization_id: organizationId,
+        price_type_id: priceTypeId,
+        paybox_id: payboxId,
+        priority,
+        is_posted: isPosted,
+        products: cart.map((c) => ({
+          nomenclature_id: c.nomenclature.id,
+          quantity: c.quantity,
+          price: c.price,
+          discount: c.discount,
+        })),
+      };
+      await createSale(token, payload);
+      const { toast } = await import("sonner");
+      toast.success(isPosted ? "Sale created and posted!" : "Sale created!");
+      setCart([]);
+      setContragent(null);
+    } catch {
+      const { toast } = await import("sonner");
+      toast.error("Failed to create sale. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (loadingMeta) {
     return (
@@ -250,6 +286,21 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
             />
           </CardContent>
         </Card>
+
+        {/* Order summary + submit */}
+        <Card className="bg-slate-900/60 border-slate-700/50">
+          <CardContent className="p-4">
+            <OrderSummary
+              cart={cart}
+              contragent={contragent}
+              submitting={submitting}
+              onSubmit={handleSubmit}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Bottom padding for mobile */}
+        <div className="h-6" />
       </main>
     </div>
   );

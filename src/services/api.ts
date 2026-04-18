@@ -1,4 +1,4 @@
-import { apiClient } from "@/lib/api-client";
+import { apiClient } from "@/src/lib/api-client";
 import type {
   ContragentMeta,
   Warehouse,
@@ -8,7 +8,7 @@ import type {
   NomenclatureMeta,
   SalePayload,
   SaleResponse,
-} from "@/types";
+} from "@/src/types";
 
 // ─── Contragents ──────────────────────────────────────────────────────────────
 

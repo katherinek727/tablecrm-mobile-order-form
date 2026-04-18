@@ -278,7 +278,7 @@ export function OrderForm({ token, onLogout }: OrderFormProps) {
               type="number"
               min={0}
               value={priority}
-              onChange={(e) => setPriority(Math.max(0, Number(e.target.value)))}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPriority(Math.max(0, Number(e.target.value)))}
               className="bg-slate-800/60 border-slate-600/50 text-white h-11 rounded-xl focus:border-violet-500 focus:ring-violet-500/20"
             />
           </CardContent>

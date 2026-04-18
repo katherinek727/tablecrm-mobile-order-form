@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Allow cross-origin requests to the TableCRM API
+  async rewrites() {
+    return [
+      {
+        source: "/api/proxy/:path*",
+        destination: "https://app.tablecrm.com/api/v1/:path*",
+      },
+    ];
+  },
   async headers() {
     return [
       {
